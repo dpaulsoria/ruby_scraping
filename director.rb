@@ -7,19 +7,26 @@ class Director
 
     def save
         if !self::validate_if_exists()
-            File.open("directores.csv", "a") do |line|
-                line.write("#{@name}\n")
+            File.open("directores.csv", "a") do |file|
+                file.write("#{@name}\n")
             end
         end
     end
 
     def validate_if_exists()
-        File.open("directores.csv", "r") do |line|
-            if @name == line
-                return true
+        File.open("directores.csv", "r") do |file|
+            file.readlines().each do |line|
+                tmp = line
+                puts tmp.chomp('\n')
+                puts "Validating: #{@name} ==  #{tmp}? "
+        
+                if @name == tmp
+                    puts "its true"
+                    return true
+                end
             end
         end
-
+        puts "its not true"
         return false
     end
 

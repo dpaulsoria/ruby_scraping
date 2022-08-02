@@ -21,8 +21,7 @@ class Pelicula
   end
 
   def prettier(string)
-    string = string.strip
-    string = string.split
+    string = string.strip.split
     original_size = string.size
     result_array = Array.new(original_size-1)
     counter = 0

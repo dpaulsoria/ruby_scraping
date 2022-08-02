@@ -5,6 +5,8 @@ require 'nokogiri' # formatear, parsear a html
 require 'csv' # escribir y leer csv
 
 require './pelicula.rb'
+require './actor.rb'
+require './director.rb'
 
 link = 'https://ww1.cuevana3.me/peliculas-mas-valoradas'
 
@@ -45,8 +47,38 @@ contenedorPeliculas.css('.TPost').each do |post|
   # img = post.css('.Image img').attr('data-src')
   # puts 'IMG Link: ' + img
   # puts post.at_css('.Objf img').attr('data-src')
-  # director = post.css('.Director').inner_text
-  # puts director
+
+  def prettier(string)
+    string = string.strip.split(",")
+    tmp = string[0].split(":")[1]
+    string[0] = tmp
+    original_size = string.size
+    result_array = Array.new(original_size-1)
+    counter = 0
+    for i in 0..original_size-1
+      tmp = string[i].strip.chomp(",")
+      result_array[counter] = tmp
+      counter += 1
+    end
+    return result_array.join('/')
+  end
+
+  directores = post.css('.Director').inner_text
+  puts directores
+  directores = prettier(directores)
+  actores = post.css('.Actors').inner_text
+  puts actores
+  actores = prettier(actores)
+
+  directores.split("/").each do |director|
+    tmp = Director.new(director)
+    tmp.save()
+  end
+
+  actores.split("/").each do |actor|
+    tmp = Actor.new(actor)
+    tmp.save()
+  end
 
   
   pelicula = Pelicula.new(title, gender, year, duration, rating, link)
