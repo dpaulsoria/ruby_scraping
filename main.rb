@@ -16,6 +16,8 @@ parsed_content = Nokogiri::HTML(datosStr)
 titulo = parsed_content.css('.Top').inner_text
 puts titulo
 
+puts "Los datos extraídos de cada película"
+
 # Lectura de un contenedor compuesto, clase MovieList
 contenedorPeliculas = parsed_content.css('.MovieList')
 # puts contenedorPeliculas
@@ -24,34 +26,41 @@ contador = 1
 contenedorPeliculas.css('.TPost').each do |post|
   # puts(contador, post)
   puts '------------------------------------------------------'
-  
-  year = post.css('.Year').inner_text
-  puts 'Year: ' + year
-  title = post.css('.Title').inner_text
-  puts 'Title: ' + title
-  img = post.css('.Image img').attr('data-src')
-  puts 'IMG Link: ' + img
-  # puts post.at_css('.Objf img').attr('data-src')
-  link = post.css('a')
-  puts('link: ' + link.attr('href'))
-  rating = post.css('.Vote').inner_text
-  puts 'Rating: ' + rating
-  director = post.css('.Director').inner_text
-  puts director
-  gender = post.css('.Genre').inner_text
-  puts gender
-  duration = post.css('.Time').inner_text
-  puts 'Time: ' + duration
 
+  title = post.css('.Title').css('h2').inner_html
+  puts "Title: #{title}"
+  gender = post.css('.Genre').inner_text
+  puts gender # Gender
+  year = post.css('.Year').inner_text
+  puts "Year: #{year}"
+  duration = post.css('.Time').inner_text
+  puts "Time: #{duration}"
+  rating = post.css('.Vote').inner_text
+  puts "Rating: #{rating}"
+  link = post.css('a').attr('href')
+  puts "link: #{link}"
+
+  # puts title
+
+  # img = post.css('.Image img').attr('data-src')
+  # puts 'IMG Link: ' + img
+  # puts post.at_css('.Objf img').attr('data-src')
+  # director = post.css('.Director').inner_text
+  # puts director
+
+  
   pelicula = Pelicula.new(title, gender, year, duration, rating, link)
 
-  puts pelicula.string_csv()
+  pelicula.save()
   
   contador += 1
+  if contador == 2
+    break
+  end
 end
 
-CSV.open('prueba.csv', 'ab') do |csv|
-  csv << %w[hola esto es una prueba]
-end
+# CSV.open('prueba.csv', 'ab') do |csv|
+#   csv << %w[hola esto es una prueba]
+# end
 
 puts "He finalizado el taller \u{1f60e}"  # Comentarlo mientras no lo finalice
