@@ -17,18 +17,18 @@ class Actor
 
     def validate_if_exists()
         File.open("actores.csv", "r") do |file|
-            file.readlines().each do |line|
-                tmp = line
-                puts tmp.chomp('\n')
-                puts "Validating: #{@name} ==  #{tmp}? "
-        
-                if @name == tmp
-                    puts "its true"
+            # puts "Opening actores.csv to validate this name : #{@name}"
+            counter = 0
+            for line in file.readlines()
+                line = line.strip.chomp("\n")
+                # puts ">     Validating line ##{counter}"
+                # puts ">    > Content: #{line}"
+                # puts ">    > > #{line == @name}"
+                if line == @name
                     return true
                 end
             end
         end
-        puts "its not true"
         return false
     end
 
