@@ -79,7 +79,7 @@ contenedorPeliculas.css('.TPost').each do |post|
   puts directores
   tmp_directores = directores.split(':')
   
-  puts "Directores to save: #{tmp_directores}"
+  # puts "Directores to save: #{tmp_directores}"
   if tmp_directores.size >= 2
     # puts "Inside"
     directores = prettier(directores)
@@ -95,7 +95,7 @@ contenedorPeliculas.css('.TPost').each do |post|
   puts actores
   tmp_actores = actores.split(':')
   
-  puts "Actores to save: #{tmp_actores}"
+  # puts "Actores to save: #{tmp_actores}"
   if tmp_actores.size >= 2
     # puts "Inside"
     actores = prettier(actores)
