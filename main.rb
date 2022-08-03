@@ -18,7 +18,7 @@ parsed_content = Nokogiri::HTML(datosStr)
 titulo = parsed_content.css('.Top').inner_text
 puts titulo
 
-puts "Los datos extraídos de cada película"
+puts 'Los datos extraídos de cada película'
 
 # Lectura de un contenedor compuesto, clase MovieList
 contenedorPeliculas = parsed_content.css('.MovieList')
@@ -49,50 +49,71 @@ contenedorPeliculas.css('.TPost').each do |post|
   # puts post.at_css('.Objf img').attr('data-src')
 
   def prettier(string)
-    if !string.nil?
-      string = string.strip.split(",")
-      tmp = string[0].split(":")[1]
-      string[0] = tmp
-      original_size = string.size
-      result_array = Array.new(original_size-1)
-      counter = 0
-      for i in 0..original_size-1
-        tmp = string[i].strip.chomp(",")
-        result_array[counter] = tmp
-        counter += 1
-      end
-      return result_array.join('/')
+    if string.nil?
+      return ''
     else
-      return ""
+      string = string.strip.split(',')
+      # puts "String"
+      # puts string
+      tmp = string[0].split(':')
+      if tmp.size == 2
+        tmp = tmp[1]
+        string[0] = tmp 
+        # puts "Size == 2"
+        # puts tmp
+        original_size = string.size
+        result_array = Array.new(original_size - 1)
+        counter = 0
+        (0..original_size - 1).each do |i|
+          tmp = string[i].strip.chomp(',')
+          result_array[counter] = tmp
+          counter += 1
+        end
+        puts "Saving: #{result_array}"
+        return result_array.join('/')
+      end
     end
-
   end
 
   directores = post.css('.Director').inner_text
   puts directores
-  directores = prettier(directores)
+  tmp_directores = directores.split(':')
+  
+  puts "Directores to save: #{tmp_directores}"
+  if tmp_directores.size >= 2
+    # puts "Inside"
+    directores = prettier(directores)
+    directores.split('/').each do |director|
+      tmp = Director.new(director)
+      tmp.save
+    end
+  
+    
+  end
+  
   actores = post.css('.Actors').inner_text
   puts actores
-  actores = prettier(actores)
-
-  directores.split("/").each do |director|
-    tmp = Director.new(director)
-    tmp.save()
-  end
-
-  actores.split("/").each do |actor|
-    tmp = Actor.new(actor)
-    tmp.save()
-  end
-
+  tmp_actores = actores.split(':')
   
+  puts "Actores to save: #{tmp_actores}"
+  if tmp_actores.size >= 2
+    # puts "Inside"
+    actores = prettier(actores)
+    actores.split('/').each do |actor|
+      tmp = Actor.new(actor)
+      tmp.save
+    end
+    
+  end
+
   pelicula = Pelicula.new(title, gender, year, duration, rating, link)
 
-  pelicula.save()
-  
+  pelicula.save
+
+  # Tester
   # contador += 1
   # if contador == 2
-  #   break
+  #  break
   # end
 end
 

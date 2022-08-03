@@ -1,9 +1,16 @@
 class Pelicula
   attr_accessor :name, :gender, :year, :duration, :rating, :link
-  
-  def initialize(name, gender, year='SF', duration, rating, link)
+
+  def initialize(name, gender, year = 'SF', duration, rating, link)
+    name = 'nil' if name.nil?
+    gender = 'nil' if gender.nil?
+    year = 'SF' if year.nil?
+    duration = -1 if duration.nil?
+    rating = -1 if rating.nil?
+    link = 'nil' if link.nil?
+
     @name = name
-    @gender = self::prettier(gender)
+    @gender = prettier(gender)
     @year = year
     @duration = duration
     @rating = rating
@@ -11,8 +18,8 @@ class Pelicula
   end
 
   def save
-    File.open("peliculas.csv", "a") do |line|
-      line.write("#{self::string_csv()}\n")
+    File.open('peliculas.csv', 'a') do |line|
+      line.write("#{string_csv}\n")
     end
   end
 
@@ -21,19 +28,22 @@ class Pelicula
   end
 
   def prettier(string)
-    if !string.nil?
+    if string.nil?
+      return ""
+    else
       string = string.strip.split
       original_size = string.size
-      result_array = Array.new(original_size-1)
-      counter = 0
-      for i in 1..original_size-1
-        tmp = string[i].strip.chomp(",")
-        result_array[counter] = tmp
-        counter += 1
+      size = original_size - 1
+      if size >= 0
+        result_array = Array.new(size)
+        counter = 0
+        (1..size).each do |i|
+          tmp = string[i].strip.chomp(',')
+          result_array[counter] = tmp
+          counter += 1
+        end
+        return result_array.join('/')
       end
-      return result_array.join('/')
-    else
-      return ""
     end
   end
 end

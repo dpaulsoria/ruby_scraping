@@ -2,6 +2,7 @@ class Director
     attr_accessor :name
 
     def initialize(name)
+        name = 'nil' if name.nil?
         @name = name
     end
 
