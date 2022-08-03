@@ -21,15 +21,19 @@ class Pelicula
   end
 
   def prettier(string)
-    string = string.strip.split
-    original_size = string.size
-    result_array = Array.new(original_size-1)
-    counter = 0
-    for i in 1..original_size-1
-      tmp = string[i].strip.chomp(",")
-      result_array[counter] = tmp
-      counter += 1
+    if !string.nil?
+      string = string.strip.split
+      original_size = string.size
+      result_array = Array.new(original_size-1)
+      counter = 0
+      for i in 1..original_size-1
+        tmp = string[i].strip.chomp(",")
+        result_array[counter] = tmp
+        counter += 1
+      end
+      return result_array.join('/')
+    else
+      return ""
     end
-    return result_array.join('/')
   end
 end

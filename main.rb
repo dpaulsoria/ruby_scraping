@@ -24,7 +24,7 @@ puts "Los datos extraídos de cada película"
 contenedorPeliculas = parsed_content.css('.MovieList')
 # puts contenedorPeliculas
 
-contador = 1
+# contador = 1
 contenedorPeliculas.css('.TPost').each do |post|
   # puts(contador, post)
   puts '------------------------------------------------------'
@@ -49,18 +49,23 @@ contenedorPeliculas.css('.TPost').each do |post|
   # puts post.at_css('.Objf img').attr('data-src')
 
   def prettier(string)
-    string = string.strip.split(",")
-    tmp = string[0].split(":")[1]
-    string[0] = tmp
-    original_size = string.size
-    result_array = Array.new(original_size-1)
-    counter = 0
-    for i in 0..original_size-1
-      tmp = string[i].strip.chomp(",")
-      result_array[counter] = tmp
-      counter += 1
+    if !string.nil?
+      string = string.strip.split(",")
+      tmp = string[0].split(":")[1]
+      string[0] = tmp
+      original_size = string.size
+      result_array = Array.new(original_size-1)
+      counter = 0
+      for i in 0..original_size-1
+        tmp = string[i].strip.chomp(",")
+        result_array[counter] = tmp
+        counter += 1
+      end
+      return result_array.join('/')
+    else
+      return ""
     end
-    return result_array.join('/')
+
   end
 
   directores = post.css('.Director').inner_text
@@ -85,10 +90,10 @@ contenedorPeliculas.css('.TPost').each do |post|
 
   pelicula.save()
   
-  contador += 1
-  if contador == 2
-    break
-  end
+  # contador += 1
+  # if contador == 2
+  #   break
+  # end
 end
 
 # CSV.open('prueba.csv', 'ab') do |csv|
